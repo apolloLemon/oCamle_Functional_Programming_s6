@@ -55,10 +55,49 @@ let newPow x n =
 ;;
 
 let rec newtonRoot x y eps =
-	if y=0 then y=x
-	else 
+	if (abs (y*y-x) <= eps)
+		then y
+		else newtonRoot x ((y+(x/y)))/2 eps
+;;
+
+let racine x = 
+	let eps = 0.0000001 in
+	let correct y = 
+		(abs (y*y-x) <= eps)
+	and suivant y = 
+		( (y+(x/y)) / 2 )
+	in
+	let rec newton y =
+		if correct y 	then y
+						else newton (suivant y)
+	in newton x
+;;
+
+(*Appliquer Juska*)
+
+let rec appl_jusque f x b =
+	if b(x) then x
+			else appl_jusque f (f x) b
+;;
+
+let appliquer_jusque f arret =
+	let rec iterer x =
+		if arret x 	then x
+					else iterer (f x)
+	in iterer
+;;
+
+let racine x =
+	let correct y = 
+		(abs (y*y-x) <= eps)
+	and suivant y = 
+		( (y+(x/y)) / 2 )
+	in appl_jusque suivant x correct
+;;
 
 
-
-
+let racine =
+ appliquer_jusque 
+ 	(fun y -> ( (y+(x/y)) / 2 ))
+ 	(fun y -> (abs (y*y-x) <= eps))
 ;;
