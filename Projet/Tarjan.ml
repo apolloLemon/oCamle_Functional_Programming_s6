@@ -58,6 +58,16 @@ let inverser g =
 	[] g 
 ;;
 
+let parcours_prof graph =
+    let rec rExplorer visited node =
+        if not (List.mem node visited) then
+            let s = liste_succ graph node in
+                List.fold_left rExplorer (node::visited) s
+        else
+            visited
+    in List.fold_left rExplorer [] (liste_sommet graph)
+;;
+
 (*
 let rec parcours_profondeur g seen tosee =
 	match tosee with
@@ -82,4 +92,55 @@ let parcours graphe =
 
 let parcours_prof g =
 *)
+
+
+(*
+Depth Probe
+=> get vertex_label
+=> get 
+check vlabel of CS isn't in record
+
+(int * int list) list -> (int * int list)
+
+-> int list  
+*)
+(*
+Essentially returns the first of a couple
+let rec vertex_label = function
+	(s,_) -> s
+;;
+
+let rec get_vertex = function
+	(s,succ)::r -> function 
+					n -> if n=s then (s,succ)
+								else get_vertex r n
+| [] -> failwith "404 vertex not found"
+;;
+
+let rec get_vertex graph n =
+	match graph with
+		s::r -> if n=vertex_label s 
+					then s
+					else get_vertex r n
+;;
+
+let rec a f l = 
+	match l with
+		s::r ->
+;; 
+
+let rec depthProbe (s,succ) g hm p =
+	if (List.mem s hm) then []
 	
+	else if (List.mem s p) then p
+
+	else
+		
+		s::( List.fold_left (depthProbe (get_vertex g N ) g s::hm p) )
+
+
+
+let rec depthProbe s g hm p =
+	if ()List.mem
+;;
+*)
