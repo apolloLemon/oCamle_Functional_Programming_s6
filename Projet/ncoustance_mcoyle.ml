@@ -1,5 +1,8 @@
 (* Code for Ocaml project 
 
+Nathan 	Coustance
+Matthew	Coyle
+
 *)
 
 (* ###################### *)
@@ -35,7 +38,7 @@ let inverse_graphe g =
 
 (*
 (p,i) est un couple (parcours , information)
-C'est 'case memoire' qui va voyager a travers les fold_left
+C'est 'case memoire' qui va voyager a' travers les fold_left
 
 
 sommet graphe parcours informations
@@ -246,7 +249,9 @@ let graphe1 = [	(1, [6;7;8]) ;
 				(8, [6;7])]
 ;;
 
+(*
 parcours_prof graphe1;;
 parcours_prof (inverse_graphe graphe1);;
 connexites graphe1;;
 tarjan graphe1;;
+*)
