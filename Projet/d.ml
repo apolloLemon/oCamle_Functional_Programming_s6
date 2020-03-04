@@ -90,9 +90,51 @@ let parcours_prof g =
 			(liste_sommet g)
 		)
 ;;
-
-let connexites g =
-	parcours_prof (inverser g)
+(*
+let rec groupProbe s g (gs,i)=
+	if(List.mem s i)
+		then (gs,i)
+		else 
+			(List.fold_left (* On relance sur tout les successeurs *)
+				(fun (p,i) s ->
+					depthProbe s g (p,i))
+				(p,s::i) (*on rejoute l'information comme quoi on est passe' par s*)
+				(liste_succ g s) (*Liste des succ pour le fold_left*)
+			)
 ;;
 (*
 *)
+
+let connexites g =
+	let ig = inverser g in
+		depthProbe 2 ig ([],[])
+;;
+*)
+
+let rec remove res l1 l2 =
+	match l1 with
+		| [] -> (List.rev res)
+		| h::t -> 	if List.mem h l2 then
+						remove res t l2
+					else
+						remove (h::res) t l2
+;;
+
+let connexites graph =
+	let suffixe = parcours_prof graph in
+	let inverse_suffixe = parcours_prof (inverser graph) in
+	let rec rConnexites (suff, invSuff) save res =
+		match invSuff with
+			| [] -> res
+			| h::t -> 	if h=(List.hd suff) then
+							rConnexites
+								( (remove [] suff (h::t)), (remove [] save (h::t)) ) 
+								(remove [] save (h::t))
+								[(List.rev (h::t))]@res
+						else
+							rConnexites
+								(suff,t)
+								save
+								res
+	in rConnexites (suffixe,inverse_suffixe) inverse_suffixe []
+;;
