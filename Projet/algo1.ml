@@ -9,40 +9,16 @@ let graphe1 = [	(1, [6;7;8] 	) ;
 				(7, [] 			) ; 
 				(8, [6;7] 		)];;
 
-(* ('a * 'b)list -> 'a list *)
-let rec liste_sommet = function
-	[] 			-> []
-| 	(s,_)::r 	-> s::liste_sommet r
-;; 
 let liste_sommet g = 
 	List.fold_left (fun a (s,_) -> a@[s]) [] g
 ;; 
 
-
-
-(* 'a -> ('a * 'b)list -> 'b list *)
-let rec liste_succ = function 
-	n -> function
-			[] 			-> failwith "404"
-		| 	(s,succ)::r -> if s=n 	then succ
-									else liste_succ n r
-;;
-(* ('a * 'b)list -> 'a -> 'b list *)
-let rec liste_succ g n = 
-	match g with
-			[] 			-> failwith "404"
-		| 	(s,succ)::r -> if s=n 	then succ
-									else liste_succ r n
-;;
 let rec liste_succ = function 
 			[] 			-> failwith "404"
 		| 	(s,succ)::r -> function n -> if s=n 	then succ
 													else liste_succ r n
 ;;
 
-
-
-(* 'a -> ('b * 'a list) list -> 'b list *)
 let rec findPred = function 
 	n -> function
 		[]		->	[]
@@ -51,7 +27,7 @@ let rec findPred = function
 						else findPred n r
 ;;
 
-(* ('a * 'a list) list -> ('a * 'a list) list *)
+
 let inverser g =
 	List.fold_left 
 	(fun a (s,succ) -> a@[(s,findPred s g)])
@@ -62,7 +38,6 @@ let inverser g =
 (*
 (p,i) est un couple (parcours , information)
 C'est 'case memoire' qui va voyager a travers les fold_left
-
 
 sommet graphe parcours informations
 *)
@@ -79,8 +54,6 @@ let rec depthProbe s g (p,i)=
 			)
 ;;
 
-
-
 let parcours_prof g =
 	let f (x,_) = x in 
 		f (List.fold_left 
@@ -90,26 +63,8 @@ let parcours_prof g =
 			(liste_sommet g)
 		)
 ;;
-(*
-let rec groupProbe s g (gs,i)=
-	if(List.mem s i)
-		then (gs,i)
-		else 
-			(List.fold_left (* On relance sur tout les successeurs *)
-				(fun (p,i) s ->
-					depthProbe s g (p,i))
-				(p,s::i) (*on rejoute l'information comme quoi on est passe' par s*)
-				(liste_succ g s) (*Liste des succ pour le fold_left*)
-			)
-;;
-(*
-*)
 
-let connexites g =
-	let ig = inverser g in
-		depthProbe 2 ig ([],[])
-;;
-*)
+
 
 let rec remove res l1 l2 =
 	match l1 with
@@ -138,33 +93,3 @@ let connexites graph =
 								res
 	in rConnexites (suffixe,inverse_suffixe) inverse_suffixe []
 ;;
-
-
-type stack = V | A of (int * stack);;
-let stk x p = A(x,p);;
-let pop = function
-	V -> failwith "empty"
-| 	A(_,p) -> p 
-;;
-let rec popto = function
-	V -> failwith "empty"
-| 	A(t,p) -> function n -> if n=t
-							then p
-							else popto p n
-;;
-let rec instack s n= 
-match s with
-	V -> false
-| A(t,s) -> if n=t 
-				then true
-				else instack s n
-;;  
-
-
-let rec tarjProbe v g (c,s,i,l)=
-	if (List.mem v i) 
-		then ()	
-		else
-;;
-(*
-*)
